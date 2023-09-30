@@ -1,0 +1,2 @@
+Cust_ID,Bank_Name,IFSC_Code,Account_No,Payment_Mode,Amount
+CU1002,SBI,12346578900,2134567890,RTGS,12340.0

@@ -1,0 +1,3 @@
+Cust_Id,Acc_No,Acc_Type,Opening_Date,Opening_Balance,Current_Balance
+CU1002,1234567809.0,Current,2023/09/29,120000.0,120107660.0
+SV1002,1234567890.0,Savings,2023/09/29,1200000.0,1200000.0
