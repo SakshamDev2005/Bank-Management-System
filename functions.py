@@ -172,9 +172,10 @@ def OpenAcc():
     acc_no = input('Enter the Account No ->')
     dobp = input('Enter the DOB (YYYY/MM/DD) ->')
     validOpenAcc(cust_id,cust_name,open_bal,phone,sex,pan_no,acc_no,dobp)
-
+    
 # Deposition of Amount by the Customer
-def Deposit(): 
+def Deposit():
+    global cus,accbook,transaction
     print('\n')
     print('<----- Deposit of Amount ----->')
     cust_id = input('Enter the Customer Id ->')
@@ -199,6 +200,7 @@ def Deposit():
 
 #Validates the inputs of Withdraw function
 def validWithdraw(cust_id):
+    global cus,accbook,transaction
     if (accbook.loc[:, "Cust_Id"] == cust_id).any():
         v = accbook[(accbook["Cust_Id"] == cust_id)].index.values
         withdraw_am = float(input('Enter the Amount ->'))
@@ -220,6 +222,7 @@ def validWithdraw(cust_id):
 
 # Withdrawl of Amount by the Customer
 def Withdraw():
+    global cus,accbook,transaction
     print('\n')
     print('<----- Withdraw of Amount ----->')
     cust_id = input('Enter the Customer Id ->')
@@ -231,6 +234,7 @@ def Withdraw():
 
 #Validates the inputs of Tranfer function
 def validTransfer(cust_id,acc_no,pay_mode,bank,ifsc):
+    global cus,accbook,transaction,transfer
     if cus.loc[:, "Cust_Id"].eq(cust_id).any():
         if not acc_no.isdigit():
             print('Enter the valid account number')
@@ -264,6 +268,7 @@ def validTransfer(cust_id,acc_no,pay_mode,bank,ifsc):
 
 # Transfer the Amount to the other Account
 def Transfer():
+    global cus,accbook,transaction,transfer
     print('\n')
     print('<----- Transfer of Amount ----->')
     cust_id = input('Enter the Customer Id ->')
@@ -319,6 +324,8 @@ def Cus_Det():
 
 #Graphs of Data
 def Graph():
+    global accbook
+    
     colors = sns.color_palette("Set2")
     colors2 = sns.color_palette("Set1")
     print('\n')
@@ -347,47 +354,14 @@ def Graph():
             plt.bar(data['Acc_Type'],grouped_data,width=0.3,color=colors)
             plt.xlabel('Kind of Accounts')
             plt.ylabel('No. of Accounts Opened')
-            plt.title('Deposits made under Kind of Acccount')
+            plt.title('No. of accounts opened under Kind of Acccount')
             plt.show()
         else:
             print('Data is not available, Try Later')
-            '''
-
-    elif ch == 2:
-        accbook['Open_Date'] = pd.to_datetime(accbook['Opening_Date'], format='%Y/%m/%d')
-
-        # Create a new column to store the month of account opening
-        accbook['Open_Month'] = accbook['Open_Date'].dt.month
-
-        # Group by month and count the number of accounts opened in each month
-        monthly_counts = accbook['Open_Month'].value_counts().sort_index()
-
-        print(monthly_counts)
-        print(accbook)
-
-        # Create the bar chart
-        plt.figure(figsize=(10, 6))
-        plt.bar(monthly_counts.index, monthly_counts.values, tick_label=[f'Month {month}' for month in monthly_counts.index])
-        plt.xlabel('Month')
-        plt.ylabel('Number of Accounts Opened')
-        plt.title('Number of Accounts Opened in Each Month')
-        plt.xticks(rotation=45)
-        plt.tight_layout()
-
-        # Show the plot
-        plt.show()
-        '''
 
     else:
         print('Invalid option')
     Func()
-
-    '''
-        if not grouped_data.empty:
-            plt.bar(grouped_data.index, grouped_data.values, width=0.3, color=colors)
-            plt.show()
-        else:
-            print('Data is not available, Try later')'''
 
 # Validates the inputs of the Update function
 def validUpdate(ch, cust_id):
