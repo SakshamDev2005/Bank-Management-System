@@ -31,11 +31,12 @@ def calculateAge(birthDate):
 
 # Send data to CSV files
 def to_csv():
+    Files()
     global cus, accbook, trans, transfer
-    cus.to_csv('Files/Customers.csv', index=False)
-    accbook.to_csv('Files/Acc.csv', index=False)
-    trans.to_csv('Files/Transaction.csv', index=False)
-    transfer.to_csv('Files/Transfer.csv', index=False)
+    cus.to_csv('Files/Customers/Customers.csv', index=False)
+    accbook.to_csv('Files/Customers/Acc.csv', index=False)
+    trans.to_csv('Files/Customers/Transaction.csv', index=False)
+    transfer.to_csv('Files/Customers/Transfer.csv', index=False)
 
 # Validates Customer ID
 def validate_id(cust_id):
@@ -45,8 +46,9 @@ def validate_id(cust_id):
             return False
         
 #Validates the inputs of Open Acc function        
-def validOpenAcc(cust_id,cust_name,open_bal,phone,sex,pan_no,acc_no,dobp): 
+def validOpenAcc(cust_id,cust_name,open_bal,phone,sex,pan_no,acc_no,dobp):
     global cus, accbook, trans, transfer
+    Files()
 
     cur_bal = open_bal
     acc_type = None
@@ -152,6 +154,8 @@ def validOpenAcc(cust_id,cust_name,open_bal,phone,sex,pan_no,acc_no,dobp):
 #Open the Account for new Customer
 def OpenAcc():
     global cus,accounts
+    Files()
+
     print('\n')
     print('<----- Creation of New Account ----->')
     cust_id = input('Enter the Customer Id ->')
@@ -176,6 +180,8 @@ def OpenAcc():
 # Deposition of Amount by the Customer
 def Deposit():
     global cus,accbook,transaction
+    Files()
+    
     print('\n')
     print('<----- Deposit of Amount ----->')
     cust_id = input('Enter the Customer Id ->')
@@ -201,6 +207,8 @@ def Deposit():
 #Validates the inputs of Withdraw function
 def validWithdraw(cust_id):
     global cus,accbook,transaction
+    Files()
+
     if (accbook.loc[:, "Cust_Id"] == cust_id).any():
         v = accbook[(accbook["Cust_Id"] == cust_id)].index.values
         withdraw_am = float(input('Enter the Amount ->'))
@@ -223,6 +231,8 @@ def validWithdraw(cust_id):
 # Withdrawl of Amount by the Customer
 def Withdraw():
     global cus,accbook,transaction
+    Files()
+
     print('\n')
     print('<----- Withdraw of Amount ----->')
     cust_id = input('Enter the Customer Id ->')
@@ -235,6 +245,8 @@ def Withdraw():
 #Validates the inputs of Tranfer function
 def validTransfer(cust_id,acc_no,pay_mode,bank,ifsc):
     global cus,accbook,transaction,transfer
+    Files()
+
     if cus.loc[:, "Cust_Id"].eq(cust_id).any():
         if not acc_no.isdigit():
             print('Enter the valid account number')
@@ -269,6 +281,8 @@ def validTransfer(cust_id,acc_no,pay_mode,bank,ifsc):
 # Transfer the Amount to the other Account
 def Transfer():
     global cus,accbook,transaction,transfer
+    Files()
+
     print('\n')
     print('<----- Transfer of Amount ----->')
     cust_id = input('Enter the Customer Id ->')
@@ -285,6 +299,8 @@ def Transfer():
 # Check Account Details of the Customer       
 def See_Acc(): 
     global accbook,accounts
+    Files()
+
     print('\n')
     print('<----- Account Details Enquiry ----->')
     cust_id = input('Enter the Customer Id ->')
@@ -305,6 +321,8 @@ def See_Acc():
 # Check Customer Details of the Customer
 def Cus_Det():
     global cus,accounts
+    Files()
+
     print('\n')
     print('<----- Customer Details Enquiry ----->')
     cust_id = input('Enter the Customer Id ->')
@@ -325,6 +343,7 @@ def Cus_Det():
 #Graphs of Data
 def Graph():
     global accbook
+    Files()
     
     colors = sns.color_palette("Set2")
     colors2 = sns.color_palette("Set1")
@@ -366,6 +385,8 @@ def Graph():
 # Validates the inputs of the Update function
 def validUpdate(ch, cust_id):
     global cus
+    Files()
+
     v = cus[cus["Cust_Id"] == cust_id].index.values
     if ch == 1:
         dobp = cus.at[v[0], 'DOB']
@@ -392,6 +413,8 @@ def validUpdate(ch, cust_id):
 # Updates Information of the Customer
 def Update():
     global cus
+    Files()
+
     print('\n')
     print('<----- Update Information of Customers ----->')
     cust_id = input('Enter the Customer Id ->')
@@ -410,6 +433,8 @@ def Update():
 #Closes the Account of Customer
 def Close():
     global cus,accbook,trans
+    Files()
+
     print('\n')
     print('<----- Close the Account ----->')
     cust_id = input('Enter the Cusotmer Id ->')
