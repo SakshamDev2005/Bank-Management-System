@@ -31,8 +31,8 @@ def calculateAge(birthDate):
 
 # Send data to CSV files
 def to_csv():
-    Files()
     global cus, accbook, trans, transfer
+    
     cus.to_csv('Files/Customers/Customers.csv', index=False)
     accbook.to_csv('Files/Customers/Acc.csv', index=False)
     trans.to_csv('Files/Customers/Transaction.csv', index=False)
