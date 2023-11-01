@@ -40,7 +40,7 @@ def to_csv():
 
 # Validates Customer ID
 def validate_id(cust_id):
-        if (cust_id[:2] == accounts['Symbols']).bool and len(cust_id) == 6 and cust_id[2:].isdigit():
+        if (cust_id[:2] == accounts['Symbols']).any() and len(cust_id) == 6 and cust_id[2:].isdigit():
             return True
         else:
             return False
@@ -368,9 +368,9 @@ def Graph():
     elif ch==2:
         data = accbook
         grouped_data = data.groupby('Acc_Type')['Acc_Type'].value_counts()
-
+        
         if not grouped_data.empty:
-            plt.bar(data['Acc_Type'],grouped_data,width=0.3,color=colors)
+            plt.bar(pd.unique(data['Acc_Type']),grouped_data,width=0.3,color=colors)
             plt.xlabel('Kind of Accounts')
             plt.ylabel('No. of Accounts Opened')
             plt.title('No. of accounts opened under Kind of Acccount')
@@ -464,30 +464,34 @@ def Close():
 def Func():
     print('\n')
     print('1 - Create New Account\n2 - Deposit\n3 - Withdraw\n4 - Transfer\n5 - Customer Details\n6 - Account Details\n7 - Graphs\n8 - Update\n9 - Close\n10 - Exit')
-    ch = int(input('Enter Option ->'))
     Files()
-    
-    if ch == 1:
-        OpenAcc()
-    elif ch == 2:
-        Deposit()
-    elif ch == 3:
-        Withdraw()
-    elif ch == 4:
-        Transfer()
-    elif ch == 5:
-        Cus_Det()
-    elif ch == 6:
-        See_Acc()
-    elif ch == 7:
-        Graph()
-    elif ch == 8:
-        Update()
-    elif ch==9:
-        Close()
-    elif ch == 10:
-        exit()
-    else:
-        print('Invalid Option')
-        Func()
 
+    try:
+        ch = int(input('Enter Option ->'))
+        if ch == 1:
+            OpenAcc()
+        elif ch == 2:
+            Deposit()
+        elif ch == 3:
+            Withdraw()
+        elif ch == 4:
+            Transfer()
+        elif ch == 5:
+            Cus_Det()
+        elif ch == 6:
+            See_Acc()
+        elif ch == 7:
+            Graph()
+        elif ch == 8:
+            Update()
+        elif ch==9:
+            Close()
+        elif ch == 10:
+            exit()
+        else:
+            print('Invalid Option')
+            Func()
+
+    except:
+        print("Make a Vaild Entry")
+        Func()

@@ -35,25 +35,28 @@ while True:
                 sys.stdout.flush()'''
         print(line)
         print('\n')
-        choice=int(input('Enter the choice ->'))
-        if choice==1:
-                l.Login()
-                break
-        elif choice==2:
-                l.Create()
-                break
-        elif choice==3:
-                l.Update()
-                break
-        elif choice==4:
-                l.Delete()
-                ti.sleep(2)
-                exit()
-        elif choice==5:
-                ti.sleep(1)
-                exit()
-        elif choice==6:
-                l.AddOns()
-        else:
-                print('Error, Try Again \n')
-                continue
+        try:
+                choice=int(input('Enter the choice ->'))
+                if choice==1:
+                        l.Login()
+                        break
+                elif choice==2:
+                        l.Create()
+                        break
+                elif choice==3:
+                        l.Update()
+                        break
+                elif choice==4:
+                        l.Delete()
+                        ti.sleep(2)
+                        exit()
+                elif choice==5:
+                        ti.sleep(1)
+                        exit()
+                elif choice==6:
+                        l.AddOns()
+                else:
+                        print('Error, Try Again \n')
+                        continue
+        except:
+                print("Make a Valid Entry")
