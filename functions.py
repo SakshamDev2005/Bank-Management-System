@@ -7,6 +7,8 @@ import seaborn as sns
 # Global Variables
 today = d.today()
 open_date = today.strftime("%Y/%m/%d")
+colors = sns.color_palette("Set2")
+colors2 = sns.color_palette("Set1")
 
 cus, accbook, trans, transfer = None, None, None, None
 i2, i3, i4, i5 = None, None, None, None
@@ -121,19 +123,14 @@ def validOpenAcc(cust_id,cust_name,open_bal,phone,sex,pan_no,acc_no,dobp):
 
         dob = dobp.split('/')
         age = calculateAge(d(int(dob[0]), int(dob[1]), int(dob[2])))
-        if age <=0:
-            print('You should have age of at least 1.')
+        if age < 18:
+            print('You should have age of at least 18.')
             dobp = input('Enter the DOB (YYYY/MM/DD) ->')
             validOpenAcc(cust_id,cust_name,open_bal,phone,sex,pan_no,acc_no,dobp)
         else:
+            subject = 'Adult'
             pass
-            
-        subject = 'Adult'
-        if age < 18:
-            print('You are considered Minor because your age is less than 17. ')
-            subject = 'Minor'
-        else:
-            pass
+        
     except ValueError:
         print('Date Format is Invalid, Try Again')
         dobp = input('Enter the DOB (YYYY/MM/DD) ->')
@@ -247,36 +244,32 @@ def validTransfer(cust_id,acc_no,pay_mode,bank,ifsc):
     global cus,accbook,transaction,transfer
     Files()
 
-    if cus.loc[:, "Cust_Id"].eq(cust_id).any():
-        if not acc_no.isdigit():
-            print('Enter the valid account number')
-            acc_no = input('Enter the Account no ->')
-            validTransfer(cust_id,acc_no,pay_mode,bank,ifsc)   
-        else:
-            if ifsc.isalnum() and len(ifsc) == 11:
-                v = accbook[accbook["Cust_Id"] == cust_id].index.values
-                trans_amount = float(input('Enter the Amount ->'))
-                if trans_amount > accbook.at[v[0], 'Current_Balance']:
-                    print('Insufficient balance')
-                    validTransfer(cust_id,acc_no,pay_mode,bank,ifsc)
-                else:
-                    print(f'The Amount of ₹{trans_amount} is transferred to {bank} bank account.')
-
-                    accbook.at[v[0], 'Current_Balance'] -= trans_amount
-                    lis = [cust_id, bank, ifsc, acc_no, pay_mode, trans_amount]
-                    li = [cust_id, open_date, 'Transfer', trans_amount]
-                    trans.loc[i4, :] = li
-                    transfer.loc[i5, :] = lis
-                        
-                    to_csv()
-                    Func()    
-            else:
-                print('Enter the valid IFSC code')
-                ifsc = input('Enter the IFSC Code ->')
-                validTransfer(cust_id,acc_no,pay_mode,bank,ifsc)            
+    if not acc_no.isdigit():
+        print('Enter the valid account number')
+        acc_no = input('Enter the Account no ->')
+        validTransfer(cust_id,acc_no,pay_mode,bank,ifsc)   
     else:
-        print('Customer Id is not available')
-        Transfer()        
+        if ifsc.isalnum() and len(ifsc) == 11:
+            v = accbook[accbook["Cust_Id"] == cust_id].index.values
+            trans_amount = float(input('Enter the Amount ->'))
+            if trans_amount > accbook.at[v[0], 'Current_Balance']:
+                print('Insufficient balance')
+                validTransfer(cust_id,acc_no,pay_mode,bank,ifsc)
+            else:
+                print(f'The Amount of ₹{trans_amount} is transferred to {bank} bank account.')
+                accbook.at[v[0], 'Current_Balance'] -= trans_amount
+                lis = [cust_id, bank, ifsc, acc_no, pay_mode, trans_amount]
+                li = [cust_id, open_date, 'Transfer', trans_amount]
+                trans.loc[i4, :] = li
+                transfer.loc[i5, :] = lis
+                
+                to_csv()
+                Func()    
+        else:
+            print('Enter the valid IFSC code')
+            ifsc = input('Enter the IFSC Code ->')
+            validTransfer(cust_id,acc_no,pay_mode,bank,ifsc)            
+                
 
 # Transfer the Amount to the other Account
 def Transfer():
@@ -287,11 +280,15 @@ def Transfer():
     print('<----- Transfer of Amount ----->')
     cust_id = input('Enter the Customer Id ->')
     if validate_id(cust_id):
-        acc_no = input('Enter the Account Number ->')
-        pay_mode = input('Enter the mode of payment ->').upper()
-        bank = input('Enter the Bank Name ->')
-        ifsc = input('Enter the IFSC Code ->')
-        validTransfer(cust_id,acc_no,pay_mode,bank,ifsc)
+            if cus.loc[:, "Cust_Id"].eq(cust_id).any():
+                acc_no = input('Enter the Account Number ->')
+                pay_mode = input('Enter the mode of payment ->').upper()
+                bank = input('Enter the Bank Name ->')
+                ifsc = input('Enter the IFSC Code ->')
+                validTransfer(cust_id,acc_no,pay_mode,bank,ifsc)
+            else:
+                print('Customer Id is not available')
+                Transfer()
     else:
         print('Enter the valid Id')
         Transfer()
@@ -345,8 +342,6 @@ def Graph():
     global accbook
     Files()
     
-    colors = sns.color_palette("Set2")
-    colors2 = sns.color_palette("Set1")
     print('\n')
     print('<----- Data Graphs ----->')
     print('1 - Deposits under Each Kind of Account\n2 - Number of Accounts Opened under each Kind')
@@ -355,9 +350,9 @@ def Graph():
     if ch == 1:
         acc_data = accbook
         grouped_data = acc_data.groupby('Acc_Type')['Current_Balance'].sum()
-
+        
         if not grouped_data.empty:
-            plt.bar(grouped_data.index, grouped_data.values, width=0.3, color=colors2)
+            plt.bar(grouped_data.index, grouped_data, width=0.3, color=colors2)
             plt.xlabel('Kind of Accounts')
             plt.ylabel('Deposits')
             plt.title('Deposits made under Kind of Acccount')
@@ -370,7 +365,7 @@ def Graph():
         grouped_data = data.groupby('Acc_Type')['Acc_Type'].value_counts()
         
         if not grouped_data.empty:
-            plt.bar(pd.unique(data['Acc_Type']),grouped_data,width=0.3,color=colors)
+            plt.bar(grouped_data.index,grouped_data,width=0.3,color=colors)
             plt.xlabel('Kind of Accounts')
             plt.ylabel('No. of Accounts Opened')
             plt.title('No. of accounts opened under Kind of Acccount')
@@ -465,33 +460,28 @@ def Func():
     print('\n')
     print('1 - Create New Account\n2 - Deposit\n3 - Withdraw\n4 - Transfer\n5 - Customer Details\n6 - Account Details\n7 - Graphs\n8 - Update\n9 - Close\n10 - Exit')
     Files()
-
-    try:
-        ch = int(input('Enter Option ->'))
-        if ch == 1:
-            OpenAcc()
-        elif ch == 2:
-            Deposit()
-        elif ch == 3:
-            Withdraw()
-        elif ch == 4:
-            Transfer()
-        elif ch == 5:
-            Cus_Det()
-        elif ch == 6:
-            See_Acc()
-        elif ch == 7:
-            Graph()
-        elif ch == 8:
-            Update()
-        elif ch==9:
-            Close()
-        elif ch == 10:
-            exit()
-        else:
-            print('Invalid Option')
-            Func()
-
-    except:
-        print("Make a Vaild Entry")
+    ch = int(input('Enter Option ->'))
+    if ch == 1:
+        OpenAcc()
+    elif ch == 2:
+        Deposit()
+    elif ch == 3:
+        Withdraw()
+    elif ch == 4:
+        Transfer()
+    elif ch == 5:
+        Cus_Det()
+    elif ch == 6:
+        See_Acc()
+    elif ch == 7:
+        Graph()
+    elif ch == 8:
+        Update()
+    elif ch==9:
+        Close()
+    elif ch == 10:
+        exit()
+    else:
+        print('Invalid Option')
         Func()
+

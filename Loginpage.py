@@ -3,7 +3,7 @@ import functions as f
 from pwinput import pwinput
 
 def Login():
-    # Takes input from employee
+    # Takes input from employee for login
 
     df = p.read_csv('Files/employees.csv')
 
@@ -26,30 +26,6 @@ def Login():
     else:
         f.Func()
     
-
-def Create():
-    #creates an account if employee doesn't have
-
-    df = p.read_csv('Files/employees.csv')
-    i = len(df.index)
-    print('\n')
-    print("<----- Creates Employee's Account ----->")
-    User = input('Enter the Username ->')  
-    if (df.loc[:,"Username"]==User).any():
-        print('Try For Another Username')
-        Create()
-    else:
-        Pass = input('Enter the Password ->')
-        df.loc[i,"Username"]=User
-        df.loc[i,"Password"]=Pass
-        df.to_csv('Files/employees.csv', index=False)
-        print('Data Entered Successfully')
-        print('\n')
-        c=input('Do you want to Login or not ? -> ').upper()
-        if c in ['YES','Y']:
-            Login()
-        else:
-            exit()
 
 def Update():
     #update useranme or password of employee
@@ -92,41 +68,5 @@ def Update():
                 exit()    
         else:
             print('Error, Try Again')
-
-def Delete():
-    #delete account of employee
-    print('\n')
-    df = p.read_csv('Files/employees.csv')
-
-    print("<----- Deletes Employee's Account ----->")
-    Username = input('Enter the Username ->')
-    Password = input('Enter the Password ->')
-    if df[(df["Username"] == Username) & (df["Password"] == Password)].empty:
-        print("Error, Try Again")
-        Delete()
-    else:
-        c = df[(df["Username"] == Username) & (df["Password"] == Password)].index.values
-        print(df.loc[c[0],:])
-        df.drop(c,inplace=True)
-        df.to_csv('Files/employees.csv',index=False)
-        print('\nThe Account is Closed')
-        print('\nTable Updated - ')
-        print(df)
-
-def AddOns():
-    #manipulate data of some csv files
-    print('\n')
-    accounts = p.read_csv('Files/Accounts.csv')
-    i1 = len(accounts)
-
-    print("<----- Making Changes in Files ----->")
-
-    entry1 = input('Enter the Account Name ->')
-    entry2 = input('Enter the Symbols ->')
-
-    li = [entry1,entry2]
-    accounts.loc[i1,:] = li
-    accounts.to_csv('Files/Accounts.csv',index=False)
-    print('Entry is inserted in the File')
 
 

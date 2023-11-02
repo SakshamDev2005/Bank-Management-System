@@ -20,12 +20,8 @@ print('\n')
 '''
 
 line = '1 - Login Account\n\
-2 - Create Account\n\
-3 - Update Account\n\
-4 - Delete Account\n\
-5 - Exit System\n\
-6 - Add-Ons'
-        
+2 - Update Account\n\
+3 - Exit System'        
 while True:
         print('\n')
         '''
@@ -35,28 +31,17 @@ while True:
                 sys.stdout.flush()'''
         print(line)
         print('\n')
-        try:
-                choice=int(input('Enter the choice ->'))
-                if choice==1:
-                        l.Login()
-                        break
-                elif choice==2:
-                        l.Create()
-                        break
-                elif choice==3:
-                        l.Update()
-                        break
-                elif choice==4:
-                        l.Delete()
-                        ti.sleep(2)
-                        exit()
-                elif choice==5:
-                        ti.sleep(1)
-                        exit()
-                elif choice==6:
-                        l.AddOns()
-                else:
-                        print('Error, Try Again \n')
-                        continue
-        except:
-                print("Make a Valid Entry")
+
+        choice=int(input('Enter the choice ->'))
+        if choice==1:
+                l.Login()
+                break
+        elif choice==2:
+                l.Update()
+                break
+        elif choice==3:
+                ti.sleep(.8)
+                exit()
+        else:
+                print('Error, Try Again \n')
+                continue
