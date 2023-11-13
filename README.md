@@ -1,10 +1,10 @@
-# Bank-Management-System
+# Bank Management System
 
-Project Overview
+Project Overview -
 
 This Python project is designed to facilitate a comprehensive understanding of the Pandas library—a powerful tool in the Python ecosystem for data manipulation and analysis. This project encompasses a set of functions that simulate a banking system, offering a practical application of Pandas in a real-world context.
 
-Key Features
+Key Features -
 
 Open Account: This function allows users to create new bank accounts, providing a hands-on experience in data entry, validation, and storage.
 
@@ -18,7 +18,7 @@ Deposit: This function enables users to deposit money into their accounts, illus
 
 Graph Functionality: The project includes a graphing feature that leverages the Matplotlib library. Users can generate two types of graphs, providing valuable insights into data visualization techniques.
 
-Educational Value
+Educational Value -
 
 This project is invaluable for educational purposes, particularly for students seeking to enhance their proficiency in Pandas. It offers a hands-on approach to learn data manipulation, validation, and visualization in a practical banking system context. By working on this project, individuals can gain a deeper understanding of Pandas while applying these skills to a real-world scenario.
 
