@@ -22,7 +22,7 @@ Educational Value -
 
 This project is invaluable for educational purposes, particularly for students seeking to enhance their proficiency in Pandas. It offers a hands-on approach to learn data manipulation, validation, and visualization in a practical banking system context. By working on this project, individuals can gain a deeper understanding of Pandas while applying these skills to a real-world scenario.
 
-Use Cases
+Use Cases -
 
 School Projects: This project serves as an excellent resource for school projects, allowing students to demonstrate their knowledge of Pandas and data management in a simulated banking environment.
 
