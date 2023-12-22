@@ -63,7 +63,6 @@ while True:
                 sys.stdout.write(Fore.GREEN+i)
                 sys.stdout.flush()
 
-        #print(line)
         print('\n')
 
         choice=int(input('Enter the choice ->'))
