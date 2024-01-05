@@ -70,40 +70,32 @@ def validOpenAcc(cust_id,cust_name,open_bal,phone,sex,pan_no,acc_no,dobp):
         phone = input('Enter the Phone Number ->')
         validOpenAcc(cust_id,cust_name,open_bal,phone,sex,pan_no,acc_no,dobp)
         
-    if pan_no.isalnum():
-        if len(pan_no) == 10:
-            if (cus['PAN_No'] == float(pan_no)).any():
-                print('The PAN Number is not available, Try Again')
-                pan_no = input('Enter the PAN Number ->')
-                validOpenAcc(cust_id,cust_name,open_bal,phone,sex,pan_no,acc_no,dobp)
-            else:
-                pass
-        else:
-            print('Enter a valid PAN Number')
-            pan_no = input('Enter the PAN No ->')
+   
+    if len(pan_no) == 10:
+        if (cus['PAN_No'] == pan_no).any():
+            print('The PAN Number is not available, Try Again')
+            pan_no = input('Enter the PAN Number ->')
             validOpenAcc(cust_id,cust_name,open_bal,phone,sex,pan_no,acc_no,dobp)
+        else:
+            pass
     else:
-        print('Enter a valid PAN Number')
+        print('Enter a valid PAN Number')            
         pan_no = input('Enter the PAN No ->')
         validOpenAcc(cust_id,cust_name,open_bal,phone,sex,pan_no,acc_no,dobp)
         
-    if acc_no.isdigit():
-        if len(acc_no) == 10:
-            if  (cus['Acc_No'] == float(acc_no)).any():
-                print('The account number is not available, Try again')
-                acc_no = input('Enter the Account Number ->')
-                validOpenAcc(cust_id,cust_name,open_bal,phone,sex,pan_no,acc_no)
-            else:
-                pass
-        else:
-            print('Enter a valid account number')
+    
+    if len(acc_no) == 10:
+        if  (cus['Acc_No'] == acc_no).any():
+            print('The account number is not available, Try again')
             acc_no = input('Enter the Account Number ->')
             validOpenAcc(cust_id,cust_name,open_bal,phone,sex,pan_no,acc_no,dobp)
+        else:
+            pass
     else:
-        print('Enter a valid Account Number')
+        print('Enter a valid account number')
         acc_no = input('Enter the Account Number ->')
         validOpenAcc(cust_id,cust_name,open_bal,phone,sex,pan_no,acc_no,dobp)
-
+    
     if sex.upper() not in ['MALE','FEMALE','OTHERS','OTHER']:
         print('Invalid attempt, Try again')
         sex = input('Enter the Gender (Male/Female/Other(s)) ->')
@@ -189,8 +181,8 @@ def Deposit():
             accbook.at[v[0], 'Current_Balance'] += depo_am
 
             to_csv()
-            numstr = str(depo_am)
-            print(f'The Amount deposited is ₹{numstr}.')
+
+            print(f'The Amount deposited is ₹{str(depo_am)}.')
             Func()
         else:
             print('Id is not available')
@@ -483,3 +475,4 @@ def Func():
         print('Invalid Option')
         Func()
 
+Func()
