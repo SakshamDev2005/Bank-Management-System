@@ -208,8 +208,7 @@ def validWithdraw(cust_id):
             accbook.at[v[0], 'Current_Balance'] -= withdraw_am
 
             to_csv()
-            numstr = str(withdraw_am)
-            print(f'The Amount Withdrawn is ₹{numstr}.')
+            print(f'The Amount Withdrawn is ₹{str(withdraw_am)}.')
             Func()
     else:
         print('Id is not available')
