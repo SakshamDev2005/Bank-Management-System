@@ -17,10 +17,10 @@ def Files():
     global cus, accbook, trans, transfer, accounts, i2, i3, i4, i5
     # Tables access
     cus = pd.read_csv('Files/Customers/Customers.csv')
-    accbook = pd.read_csv('Files/Customers/Acc.csv')
+    accbook = pd.read_csv('Files/Customers/AccountBook.csv')
     trans = pd.read_csv('Files/Customers/Transaction.csv')
     transfer = pd.read_csv('Files/Customers/Transfer.csv')
-    accounts = pd.read_csv('Files/Accounts.csv')
+    accounts = pd.read_csv('Files/AccountsKind.csv')
 
     # Index of tables
     i2, i3, i4, i5 = len(cus.index), len(accbook.index), len(trans.index), len(transfer.index)
@@ -36,7 +36,7 @@ def to_csv():
     global cus, accbook, trans, transfer
     
     cus.to_csv('Files/Customers/Customers.csv', index=False)
-    accbook.to_csv('Files/Customers/Acc.csv', index=False)
+    accbook.to_csv('Files/Customers/AccountBook.csv', index=False)
     trans.to_csv('Files/Customers/Transaction.csv', index=False)
     transfer.to_csv('Files/Customers/Transfer.csv', index=False)
 
