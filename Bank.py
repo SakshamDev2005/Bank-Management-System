@@ -193,15 +193,17 @@ def Deposit():
 
 #Validates the inputs of Withdraw function
 def validWithdraw(cust_id):
-    global cus,accbook,transaction
+    global cus,accbook,trans
     Files()
 
     if (accbook.loc[:, "Cust_Id"] == cust_id).any():
         v = accbook[(accbook["Cust_Id"] == cust_id)].index.values
         withdraw_am = float(input('Enter the Amount ->'))
+
         if withdraw_am > accbook.at[v[0], 'Current_Balance']:
             print('Insufficient balance')
             validWithdraw(cust_id)
+
         else:
             li = [cust_id, open_date, 'Withdrawl', withdraw_am]
             trans.loc[i4, :] = li
@@ -210,6 +212,7 @@ def validWithdraw(cust_id):
             to_csv()
             print(f'The Amount Withdrawn is ₹{str(withdraw_am)}.')
             Func()
+
     else:
         print('Id is not available')
         Withdraw()
@@ -222,8 +225,10 @@ def Withdraw():
     print('\n')
     print('<----- Withdraw of Amount ----->')
     cust_id = input('Enter the Customer Id ->')
+
     if validate_id(cust_id):
         validWithdraw(cust_id)
+
     else:
         print('Enter the valid Id')
         Withdraw()
@@ -233,31 +238,30 @@ def validTransfer(cust_id,acc_no,pay_mode,bank,ifsc):
     global cus,accbook,transaction,transfer
     Files()
 
-    if not acc_no.isdigit():
-        print('Enter the valid account number')
-        acc_no = input('Enter the Account no ->')
-        validTransfer(cust_id,acc_no,pay_mode,bank,ifsc)   
-    else:
-        if ifsc.isalnum() and len(ifsc) == 11:
-            v = accbook[accbook["Cust_Id"] == cust_id].index.values
-            trans_amount = float(input('Enter the Amount ->'))
-            if trans_amount > accbook.at[v[0], 'Current_Balance']:
-                print('Insufficient balance')
-                validTransfer(cust_id,acc_no,pay_mode,bank,ifsc)
-            else:
-                print(f'The Amount of ₹{trans_amount} is transferred to {bank} bank account.')
-                accbook.at[v[0], 'Current_Balance'] -= trans_amount
-                lis = [cust_id, bank, ifsc, acc_no, pay_mode, trans_amount]
-                li = [cust_id, open_date, 'Transfer', trans_amount]
-                trans.loc[i4, :] = li
-                transfer.loc[i5, :] = lis
-                
-                to_csv()
-                Func()    
+    
+    if len(ifsc) == 11:
+        v = accbook[accbook["Cust_Id"] == cust_id].index.values
+        trans_amount = float(input('Enter the Amount ->'))
+        
+        if trans_amount > accbook.at[v[0], 'Current_Balance']:
+            print('Insufficient balance')
+            validTransfer(cust_id,acc_no,pay_mode,bank,ifsc)
+        
         else:
-            print('Enter the valid IFSC code')
-            ifsc = input('Enter the IFSC Code ->')
-            validTransfer(cust_id,acc_no,pay_mode,bank,ifsc)            
+            print(f'The Amount of ₹{trans_amount} is transferred to {bank} bank account.')
+            accbook.at[v[0], 'Current_Balance'] -= trans_amount
+            lis = [cust_id, bank, ifsc, acc_no, pay_mode, trans_amount]
+            li = [cust_id, open_date, 'Transfer', trans_amount]
+            trans.loc[i4, :] = li
+            transfer.loc[i5, :] = lis
+                
+            to_csv()
+            Func()
+
+    else:
+        print('Enter the valid IFSC code')
+        ifsc = input('Enter the IFSC Code ->')
+        validTransfer(cust_id,acc_no,pay_mode,bank,ifsc)            
                 
 
 # Transfer the Amount to the other Account
@@ -269,15 +273,18 @@ def Transfer():
     print('<----- Transfer of Amount ----->')
     cust_id = input('Enter the Customer Id ->')
     if validate_id(cust_id):
+            
             if cus.loc[:, "Cust_Id"].eq(cust_id).any():
                 acc_no = input('Enter the Account Number ->')
                 pay_mode = input('Enter the mode of payment ->').upper()
                 bank = input('Enter the Bank Name ->')
                 ifsc = input('Enter the IFSC Code ->')
                 validTransfer(cust_id,acc_no,pay_mode,bank,ifsc)
+            
             else:
                 print('Customer Id is not available')
                 Transfer()
+
     else:
         print('Enter the valid Id')
         Transfer()
@@ -294,12 +301,15 @@ def See_Acc():
     if not validate_id(cust_id):
         print('Enter the valid Id')
         See_Acc()
+
     else:
+        
         if (accbook.loc[:, "Cust_Id"] == cust_id).any():
             v = accbook[accbook["Cust_Id"] == cust_id].index.values
             print('\n')
             print(accbook.loc[v[0], :])
             Func()
+        
         else:
             print("Id is not available")
             See_Acc()
@@ -314,14 +324,18 @@ def Cus_Det():
     cust_id = input('Enter the Customer Id ->')
 
     if not validate_id(cust_id):
+
         print('Enter the valid Id')
         Cus_Det()
+
     else:
+
         if (cus.loc[:, "Cust_Id"] == cust_id).any():
             v = accbook[accbook["Cust_Id"] == cust_id].index.values
             print('\n')
             print(cus.loc[v[0],:])
             Func()
+
         else:
             print("Id is not available")
             Cus_Det()
@@ -346,12 +360,13 @@ def Graph():
             plt.ylabel('Deposits')
             plt.title('Deposits made under Kind of Acccount')
             plt.show()
+        
         else:
             print("Data is not available, Try later")
 
     elif ch==2:
         data = accbook
-        grouped_data = data.groupby('Acc_Type')['Acc_Type'].value_counts()
+        grouped_data = data.groupby('Acc_Type')['Acc_Type'].size()
         
         if not grouped_data.empty:
             plt.bar(grouped_data.index,grouped_data,width=0.3,color=colors)
@@ -359,6 +374,7 @@ def Graph():
             plt.ylabel('No. of Accounts Opened')
             plt.title('No. of accounts opened under Kind of Acccount')
             plt.show()
+
         else:
             print('Data is not available, Try Later')
 
@@ -372,6 +388,7 @@ def validUpdate(ch, cust_id):
     Files()
 
     v = cus[cus["Cust_Id"] == cust_id].index.values
+
     if ch == 1:
         dobp = cus.at[v[0], 'DOB']
         dob = str(dobp).split('/')
@@ -379,16 +396,21 @@ def validUpdate(ch, cust_id):
         cus.at[v[0], 'Age'] = age
         to_csv()
         print('The Age is updated.')
+    
     elif ch == 2:
         phone = input('Enter the Phone Number ->')
+
         if phone.isdigit():
+
             if len(phone) == 10:
                 cus.at[v[0], 'Phone_No'] = int(phone)
                 to_csv()
                 print('The Phone number is updated.')
+
             else:
                 print('Enter a valid phone number')
                 validUpdate(ch, cust_id)
+        
         else:
             print('Enter a valid phone number')
             validUpdate(ch, cust_id)
@@ -403,13 +425,16 @@ def Update():
     print('<----- Update Information of Customers ----->')
     cust_id = input('Enter the Customer Id ->')
     if validate_id(cust_id):
+
         if not (cus['Cust_Id'] == cust_id).any():
             print('Id is not available')
             Update()
+
         else:
             print('1 - Age \n2 - Phone Number ')
             ch = int(input('Enter the Choice ->'))
             validUpdate(ch, cust_id)
+
     else:
         print('Enter the valid Id')
         Update()
@@ -422,13 +447,17 @@ def Close():
     print('\n')
     print('<----- Close the Account ----->')
     cust_id = input('Enter the Cusotmer Id ->')
+
     if validate_id(cust_id):
+
         if (cus.loc[:,'Cust_Id'] == cust_id).any():
             v = cus[cus["Cust_Id"] == cust_id].index.values
             c = accbook.at[v[0],'Current_Balance']
+            
             if c<0:
                 print('Pay the outstanding amount to  the Bank before Account Closure.')
                 Func()
+
             else:
                 li = [cust_id,open_date,'Account Closure',c]
                 trans.loc[i4,:] = li
@@ -437,9 +466,11 @@ def Close():
                 print(f'The Account {cust_id} is closed and the Amount ₹{c} is returned.')
                 to_csv()
                 Func()
+
         else:
             print('Customer Id is not avaiable, Try Again')
             Close()
+            
     else:
         print('Enter the Valid Id')
         Close()
