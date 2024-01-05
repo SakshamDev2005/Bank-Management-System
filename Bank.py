@@ -504,5 +504,3 @@ def Func():
     else:
         print('Invalid Option')
         Func()
-
-Func()
