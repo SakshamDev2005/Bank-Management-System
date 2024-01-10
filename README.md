@@ -57,11 +57,7 @@ An ideal learning tool for individuals looking to expand their Pandas skills, of
 
 To get started with the project, follow these steps:
 
-Install the required libraries:
-
-pip install pandas matplotlib
-
-
-Run the project:
-
-python banking_system_project.py
+- Pandas (`pip install pandas`)
+- Matplotlib (`pip install matplotlib`)
+- Seaborn (`pip install seaborn`)
+- colorama (`pip install colorama`)
